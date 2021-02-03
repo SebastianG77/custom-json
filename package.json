@@ -3,8 +3,14 @@
   "version": "0.1.0",
   "description": "A JSON parser that allows users to overwrite default parsing behavior by customized rules.",
   "main": "index.js",
+  "scripts": {
+    "dist": "standard **/*.js"
+  },
   "repository": "https://github.com/SebastianG77/custom-json.git",
   "author": "SebastianG",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
 }
