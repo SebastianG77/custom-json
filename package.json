@@ -1,0 +1,10 @@
+{
+  "name": "custom-json",
+  "version": "0.1.0",
+  "description": "A JSON parser that allows users to overwrite default parsing behavior by customized rules.",
+  "main": "index.js",
+  "repository": "github",
+  "author": "SebastianG",
+  "license": "MIT",
+  "private": false
+}
