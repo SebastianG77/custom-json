@@ -4,6 +4,7 @@
   "description": "A JSON parser that allows users to overwrite default parsing behavior by customized rules.",
   "main": "index.js",
   "scripts": {
+    "test": "jest ./tests/ --coverage",
     "dist": "standard **/*.js"
   },
   "repository": "https://github.com/SebastianG77/custom-json.git",
@@ -11,6 +12,7 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
+    "jest": "^26.6.3",
     "standard": "^16.0.3"
   }
 }
