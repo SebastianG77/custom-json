@@ -1,6 +1,6 @@
 const parse = (jsonString, reviver) => {
   const standardJSON = JSON.parse(jsonString)
-  console.log(JSON.stringify(parseValue(jsonString, 0, [], standardJSON, reviver), null, 2))
+  return parseValue(jsonString, 0, [], standardJSON, reviver).modifiedJSON
 }
 
 const parseValue = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
