@@ -50,7 +50,7 @@ const isNumericValue = (char) => /\d/.test(char) || char === '-' || char.toLower
 
 const parseString = (jsonString, currentCharIndex) => {
   let value = ''
-  let whiteSpaceFound = false
+  let firstQuotationMarkFound = false
   let isEscaped = false
   for (let i = currentCharIndex; i < jsonString.length; i++) {
     const currentChar = jsonString.charAt(i)
@@ -58,10 +58,10 @@ const parseString = (jsonString, currentCharIndex) => {
       if (isEscaped) {
         isEscaped = false
       } else {
-        if (whiteSpaceFound) {
+        if (firstQuotationMarkFound) {
           return { value: value, currentIndex: i }
         } else {
-          whiteSpaceFound = true
+          firstQuotationMarkFound = true
           continue
         }
       }
