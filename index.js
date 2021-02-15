@@ -1,45 +1,59 @@
 const parse = (jsonString, reviver) => {
-  console.log(JSON.stringify(parseValue(jsonString, 0), null, 2))
+  const standardJSON = JSON.parse(jsonString)
+  console.log(JSON.stringify(parseValue(jsonString, 0, [], standardJSON, reviver), null, 2))
 }
 
-const parseValue = (jsonString, currentCharIndex) => {
-  for (let i = currentCharIndex; i < jsonString.length; i++) {
+const parseValue = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
+  let valueObject
+  let i = currentCharIndex
+  for (i; i < jsonString.length; i++) {
     const currentChar = jsonString.charAt(i)
     if (currentChar === '"') {
-      return parseString(jsonString, i)
+      valueObject = parseString(jsonString, i)
+      break
     } else if (isNumericValue(currentChar)) {
-      return parseNumber(jsonString, i)
+      valueObject = parseNumber(jsonString, i)
+      break
     } else if (currentChar === 't' || currentChar === 'f') {
-      return parseBoolean(jsonString, i)
+      valueObject = parseBoolean(jsonString, i)
+      break
     } else if (currentChar === 'n') {
-      return parseNull(jsonString, i)
+      valueObject = parseNull(jsonString, i)
+      break
     } else if (currentChar === '{') {
-      return parseObject(jsonString, i)
+      valueObject = parseObject(jsonString, i, parentKeys, parsedJSON, reviver)
+      break
     } else if (currentChar === '[') {
-      return parseArray(jsonString, i)
+      valueObject = parseArray(jsonString, i, parentKeys, parsedJSON, reviver)
+      break
     }
   }
-  return null
+
+  const modifiedJSON = prepareReviver(parentKeys, valueObject.value, valueObject.modifiedJSON === undefined ? parsedJSON : valueObject.modifiedJSON, reviver)
+  return { value: valueObject.value, currentIndex: valueObject.currentIndex, modifiedJSON: modifiedJSON }
 }
 
-const parseObject = (jsonString, currentCharIndex) => {
-  let currentKey
+const parseObject = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
   let keyFound = false
   const object = {}
+  let modifiedJSON
   for (let i = currentCharIndex; i < jsonString.length; i++) {
     const char = jsonString.charAt(i)
     if (char === '}') {
-      return { value: object, currentIndex: i }
+      parentKeys.pop()
+      return { value: object, currentIndex: i, modifiedJSON }
     } else if (keyFound) {
-      const { value, currentIndex } = parseValue(jsonString, i, currentKey)
-      object[currentKey] = value
-      i = currentIndex
+      const currentKey = parentKeys[parentKeys.length - 1]
+      const valueObject = parseValue(jsonString, i, parentKeys, parsedJSON, reviver)
+      object[currentKey] = valueObject.value
+      i = valueObject.currentIndex
+      modifiedJSON = valueObject.modifiedJSON
       keyFound = false
     } else {
       if (char === '"') {
         const { value, currentIndex } = parseString(jsonString, i)
+        parentKeys.push(value)
         keyFound = true
-        currentKey = value
         i = currentIndex
       }
     }
@@ -102,15 +116,35 @@ const parseNull = (jsonString, currentCharIndex) => {
   return { value: null, currentIndex: currentCharIndex + 3 }
 }
 
-const parseArray = (jsonString, currentCharIndex) => {
+const parseArray = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
   const array = []
+  let modifiedJSON
   for (let i = currentCharIndex + 1; i < jsonString.length; i++) {
     if (jsonString.charAt(i) === ']') {
-      return { value: array, currentIndex: i }
+      return { value: array, currentIndex: i, modifiedJSON: modifiedJSON }
     }
-    const { value, currentIndex } = parseValue(jsonString, i)
-    array.push(value)
-    i = currentIndex
+    parentKeys.push(array.length)
+    const valueObject = parseValue(jsonString, i, parentKeys, parsedJSON, reviver)
+    parentKeys.pop()
+    array.push(valueObject.value)
+    i = valueObject.currentIndex
+    modifiedJSON = valueObject.modifiedJSON
+  }
+}
+
+const prepareReviver = (parentKeys, stringValue, parsedJSON, reviver) => {
+  const originalValue = findOriginalValue(parsedJSON, parentKeys)
+  return setKeyValue(parsedJSON, parentKeys, reviver(parentKeys[parentKeys.length - 1], originalValue, stringValue, parsedJSON, parentKeys))
+}
+
+const findOriginalValue = (parsedJSON, parentKeys) => parentKeys.reduce((accumulator, currentValue) => accumulator[currentValue], parsedJSON)
+
+const setKeyValue = (parsedJSON, parentKeys, newValue) => {
+  if (parentKeys.length === 0) {
+    return newValue
+  } else {
+    findOriginalValue(parsedJSON, parentKeys.slice(0, parentKeys.length - 1))[parentKeys[parentKeys.length - 1]] = newValue
+    return parsedJSON
   }
 }
 
