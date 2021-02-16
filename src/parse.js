@@ -93,7 +93,7 @@ const parseNumber = (jsonString, currentCharIndex) => {
     if (isNumericValue(currentChar)) {
       value += currentChar
     } else {
-      return { value: value, currentIndex: i }
+      return { value: value, currentIndex: i - 1 }
     }
   }
 }
