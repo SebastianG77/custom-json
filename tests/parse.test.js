@@ -2,8 +2,6 @@ const customJSON = require('../src/parse')
 
 const { describe, expect, it } = global
 
-// const ROOT_DIRECTORY = path.join(__dirname, '..', '..')
-
 describe('Validate a JSON file that does not contain any duplicates', () => {
   it('returns an empty list', () => {
     const jsonString = '{"mykey": "myvalue"}'
