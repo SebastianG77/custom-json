@@ -30,7 +30,7 @@ const parseValue = (jsonString, currentCharIndex, parentKeys, parsedJSON, revive
   }
 
   const modifiedJSON = prepareReviver(parentKeys, valueObject.value, valueObject.modifiedJSON === undefined ? parsedJSON : valueObject.modifiedJSON, reviver)
-  return { value: valueObject.value, currentIndex: valueObject.currentIndex, modifiedJSON: modifiedJSON }
+  return { value: valueObject.value, lastValueIndex: valueObject.lastValueIndex, modifiedJSON: modifiedJSON }
 }
 
 const parseObject = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
@@ -41,20 +41,20 @@ const parseObject = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviv
     const char = jsonString.charAt(i)
     if (char === '}') {
       parentKeys.pop()
-      return { value: object, currentIndex: i, modifiedJSON }
+      return { value: object, lastValueIndex: i, modifiedJSON }
     } else if (keyFound) {
       const currentKey = parentKeys[parentKeys.length - 1]
       const valueObject = parseValue(jsonString, i, parentKeys, parsedJSON, reviver)
       object[currentKey] = valueObject.value
-      i = valueObject.currentIndex
+      i = valueObject.lastValueIndex
       modifiedJSON = valueObject.modifiedJSON
       keyFound = false
     } else {
       if (char === '"') {
-        const { value, currentIndex } = parseString(jsonString, i)
+        const { value, lastValueIndex } = parseString(jsonString, i)
         parentKeys.push(value)
         keyFound = true
-        i = currentIndex
+        i = lastValueIndex
       }
     }
   }
@@ -73,7 +73,7 @@ const parseString = (jsonString, currentCharIndex) => {
         isEscaped = false
       } else {
         if (firstQuotationMarkFound) {
-          return { value: value, currentIndex: i }
+          return { value: value, lastValueIndex: i }
         } else {
           firstQuotationMarkFound = true
           continue
@@ -93,7 +93,7 @@ const parseNumber = (jsonString, currentCharIndex) => {
     if (isNumericValue(currentChar)) {
       value += currentChar
     } else {
-      return { value: value, currentIndex: i - 1 }
+      return { value: value, lastValueIndex: i - 1 }
     }
   }
 }
@@ -104,7 +104,7 @@ const parseBoolean = (jsonString, currentCharIndex) => {
     : currentCharIndex + 4
   const value = jsonString.substring(currentCharIndex, lastBooleanValueIndex + 1)
   if (isBoolean(value)) {
-    return { value: value, currentIndex: lastBooleanValueIndex }
+    return { value: value, lastValueIndex: lastBooleanValueIndex }
   } else {
     throw new Error(`Incorrect boolean parsing for ${value}`)
   }
@@ -113,7 +113,7 @@ const parseBoolean = (jsonString, currentCharIndex) => {
 const isBoolean = (value) => value === 'true' || value === 'false'
 
 const parseNull = (jsonString, currentCharIndex) => {
-  return { value: null, currentIndex: currentCharIndex + 3 }
+  return { value: null, lastValueIndex: currentCharIndex + 3 }
 }
 
 const parseArray = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
@@ -121,13 +121,13 @@ const parseArray = (jsonString, currentCharIndex, parentKeys, parsedJSON, revive
   let modifiedJSON
   for (let i = currentCharIndex + 1; i < jsonString.length; i++) {
     if (jsonString.charAt(i) === ']') {
-      return { value: array, currentIndex: i, modifiedJSON: modifiedJSON }
+      return { value: array, lastValueIndex: i, modifiedJSON: modifiedJSON }
     }
     parentKeys.push(array.length)
     const valueObject = parseValue(jsonString, i, parentKeys, parsedJSON, reviver)
     parentKeys.pop()
     array.push(valueObject.value)
-    i = valueObject.currentIndex
+    i = valueObject.lastValueIndex
     modifiedJSON = valueObject.modifiedJSON
   }
 }
