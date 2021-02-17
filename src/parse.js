@@ -40,7 +40,6 @@ const parseObject = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviv
   for (let i = currentCharIndex; i < jsonString.length; i++) {
     const char = jsonString.charAt(i)
     if (char === '}') {
-      parentKeys.pop()
       return { value: object, lastValueIndex: i, modifiedJSON }
     } else if (keyFound) {
       const currentKey = parentKeys[parentKeys.length - 1]
@@ -48,6 +47,7 @@ const parseObject = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviv
       object[currentKey] = valueObject.value
       i = valueObject.lastValueIndex
       modifiedJSON = valueObject.modifiedJSON
+      parentKeys.pop()
       keyFound = false
     } else {
       if (char === '"') {
