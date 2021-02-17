@@ -116,3 +116,12 @@ describe('Replace string value with escaped quotationsmarks', () => {
     expect(parsedJSON).toEqual({ mykey: newValue })
   })
 })
+
+describe('Replace string value of property "mykey" if parent is "parentKey"', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"mykey": "myvalue", "parentKey": {"mykey": "myvalue"} }'
+    const newValue = 'newValue'
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { console.log('myparents ' + parentKeys.toString()); if (typeof originalValue === 'string' && parentKeys.toString() === 'parentKey,mykey') { return newValue } else { return originalValue } })
+    expect(parsedJSON).toEqual({ mykey: 'myvalue', parentKey: { mykey: newValue } })
+  })
+})
