@@ -104,7 +104,6 @@ describe('Replace an object and its contained value', () => {
     const newStringValue = 'myvalue'
     const newObjectValue = { newKey: 'newValue' }
     const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (typeof originalValue === 'object') { return newObjectValue } else if (typeof originalValue === 'string') { return newStringValue } else { return originalValue } })
-    console.log('parsedjson ' + JSON.stringify(parsedJSON, null, 2))
     expect(parsedJSON).toEqual(newObjectValue)
   })
 })
