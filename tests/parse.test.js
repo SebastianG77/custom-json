@@ -20,9 +20,10 @@ describe('Replace false boolean value', () => {
 
 describe('Replace true boolean value', () => {
   it('returns the expected JSON object', () => {
-    const jsonString = '{"mykey": false}'
-    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (typeof originalValue === 'boolean') { return true } else { return originalValue } })
-    expect(parsedJSON).toEqual({ mykey: true })
+    const jsonString = '{"mykey": true}'
+    const newValue = false
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (typeof originalValue === 'boolean') { return newValue } else { return originalValue } })
+    expect(parsedJSON).toEqual({ mykey: newValue })
   })
 })
 
