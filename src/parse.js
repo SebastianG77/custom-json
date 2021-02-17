@@ -103,14 +103,8 @@ const parseBoolean = (jsonString, currentCharIndex) => {
     ? currentCharIndex + 3
     : currentCharIndex + 4
   const value = jsonString.substring(currentCharIndex, lastBooleanValueIndex + 1)
-  if (isBoolean(value)) {
-    return { value: value, lastValueIndex: lastBooleanValueIndex }
-  } else {
-    throw new Error(`Incorrect boolean parsing for ${value}`)
-  }
+  return { value: value, lastValueIndex: lastBooleanValueIndex }
 }
-
-const isBoolean = (value) => value === 'true' || value === 'false'
 
 const parseNull = (jsonString, currentCharIndex) => {
   return { value: null, lastValueIndex: currentCharIndex + 3 }
