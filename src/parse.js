@@ -1,6 +1,10 @@
 const parse = (jsonString, reviver) => {
-  const standardJSON = JSON.parse(jsonString)
-  return parseValue(jsonString, 0, [], standardJSON, reviver).modifiedJSON
+  if (reviver == null || reviver.length <= 2) {
+    return JSON.parse(jsonString, reviver)
+  } else {
+    const standardJSON = JSON.parse(jsonString)
+    return parseValue(jsonString, 0, [], standardJSON, reviver).modifiedJSON
+  }
 }
 
 const parseValue = (jsonString, currentCharIndex, parentKeys, parsedJSON, reviver) => {
