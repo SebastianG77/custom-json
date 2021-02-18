@@ -125,3 +125,50 @@ describe('Replace string value of property "mykey" if parent is "parentKey"', ()
     expect(parsedJSON).toEqual({ mykey: 'myvalue', parentKey: { mykey: newValue } })
   })
 })
+
+describe('Replace an array and its contained value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"mykey": ["first", "second", "third"]}'
+    const newStringValue = 'myvalue'
+    const newArrayValue = ['fourth']
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (Array.isArray(originalValue)) { return newArrayValue } else if (typeof originalValue === 'string') { return newStringValue } else { return originalValue } })
+    expect(parsedJSON).toEqual({ mykey: newArrayValue })
+  })
+})
+
+describe('Replace a specific array value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"mykey": ["first", "second", "third"]}'
+    const newValue = 'newValue'
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (typeof originalValue === 'string' && parentKeys.toString() === 'mykey,1') { return newValue } else { return originalValue } })
+    expect(parsedJSON).toEqual({ mykey: ['first', newValue, 'third'] })
+  })
+})
+
+describe('Replace Big Number value by its proper string representation', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"smallNumber": 1, "bigNumber" : 987654321123456789987654321}'
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (typeof originalValue === 'number' && originalValue.toString() !== stringValue) { return stringValue } else { return originalValue } })
+    expect(parsedJSON).toEqual({ smallNumber: 1, bigNumber: '987654321123456789987654321' })
+  })
+})
+
+describe('Use default JSON reviver function for customizing a JSON Object.', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"mykey": "myvalue"}'
+    const newValue = 'newValue'
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue) => { if (key === 'mykey') { return newValue } else { return originalValue } })
+    expect(parsedJSON).toEqual({ mykey: newValue })
+  })
+})
+
+describe('Replace value if sibling has key "otherKey"', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"mykey": "myvalue", "myObject": {"mykey": "myOtherValue", "otherKey": "anyValue"}}'
+    const newValue = true
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      if (parentKeys.slice(0, parentKeys.length - 1).reduce((accumulator, currentValue) => accumulator[currentValue], jsonObject).otherKey !== undefined && key !== 'otherKey') { return newValue } else { return originalValue }
+    })
+    expect(parsedJSON).toEqual({ mykey: 'myvalue', myObject: { mykey: true, otherKey: 'anyValue' } })
+  })
+})
