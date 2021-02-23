@@ -196,3 +196,25 @@ describe('Replace isolated numeric value', () => {
     expect(parsedJSON).toEqual(newValue)
   })
 })
+
+describe('Replace isolated array', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '[321, "myValue", false]'
+    const newNumericValue = 2000
+    const newStringValue = 'newValue'
+    const newBooleanValue = true
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      switch (typeof originalValue) {
+        case 'number':
+          return newNumericValue
+        case 'string':
+          return newStringValue
+        case 'boolean':
+          return true
+        default:
+          return originalValue
+      }
+    })
+    expect(parsedJSON).toEqual([newNumericValue, newStringValue, newBooleanValue])
+  })
+})
