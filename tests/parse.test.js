@@ -62,15 +62,6 @@ describe('Replace string value by null', () => {
   })
 })
 
-describe('Replace string value by null', () => {
-  it('returns the expected JSON object', () => {
-    const jsonString = '{"mykey": "myvalue"}'
-    const newValue = null
-    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (typeof originalValue === 'string') { return newValue } else { return originalValue } })
-    expect(parsedJSON).toEqual({ mykey: newValue })
-  })
-})
-
 describe('Replace null value by String', () => {
   it('returns the expected JSON object', () => {
     const jsonString = '{"mykey": null}'
