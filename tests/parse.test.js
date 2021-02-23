@@ -163,3 +163,36 @@ describe('Replace value if sibling has key "otherKey"', () => {
     expect(parsedJSON).toEqual({ mykey: 'myvalue', myObject: { mykey: true, otherKey: 'anyValue' } })
   })
 })
+
+describe('Replace isolated string value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '"myvalue"'
+    const newValue = 'myOtherValue'
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      return newValue
+    })
+    expect(parsedJSON).toEqual(newValue)
+  })
+})
+
+describe('Replace isolated boolean value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = 'true'
+    const newValue = false
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      return newValue
+    })
+    expect(parsedJSON).toEqual(newValue)
+  })
+})
+
+describe('Replace isolated numeric value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '-20'
+    const newValue = 20
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      return newValue
+    })
+    expect(parsedJSON).toEqual(newValue)
+  })
+})
