@@ -91,15 +91,15 @@ const parseString = (jsonString, currentCharIndex) => {
 }
 
 const parseNumber = (jsonString, currentCharIndex) => {
+  let currentChar
   let value = ''
-  for (let i = currentCharIndex; i < jsonString.length; i++) {
-    const currentChar = jsonString.charAt(i)
-    if (isNumericValue(currentChar)) {
-      value += currentChar
-    } else {
-      return { value: value, lastValueIndex: i - 1 }
-    }
+  let i = currentCharIndex
+  let lastValueIndex = i
+  while (i < jsonString.length && isNumericValue(currentChar = jsonString.charAt(i))) {
+    value += currentChar
+    lastValueIndex = i++
   }
+  return { value: value, lastValueIndex: lastValueIndex }
 }
 
 const parseBoolean = (jsonString, currentCharIndex) => {
