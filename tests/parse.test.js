@@ -218,3 +218,15 @@ describe('Replace isolated array', () => {
     expect(parsedJSON).toEqual([newNumericValue, newStringValue, newBooleanValue])
   })
 })
+
+describe('Replace isolated null value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = 'null'
+    const newValue = undefined
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      return newValue
+    })
+    expect(parsedJSON).toEqual(newValue)
+  })
+})
+
