@@ -230,3 +230,16 @@ describe('Replace isolated null value', () => {
   })
 })
 
+describe('Replace a JSON-Object with special characters', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '\n{"ordinaryKey": "ordinaryValue","special\\tkey":\t"myval\'\\\\n\\r\\"ue"}'
+    const newValue = 'newValue'
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      if (key === 'special\tkey') {
+        return newValue
+      }
+      return originalValue
+    })
+    expect(parsedJSON).toEqual({ ordinaryKey: 'ordinaryValue', 'special\tkey': newValue })
+  })
+})
