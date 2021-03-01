@@ -70,25 +70,35 @@ const parseString = (jsonString, currentCharIndex) => {
   let value = ''
   let firstQuotationMarkFound = false
   let isEscaped = false
+  let escapeFound = false
   for (let i = currentCharIndex; i < jsonString.length; i++) {
     const currentChar = jsonString.charAt(i)
-    if (currentChar === '"') {
-      if (isEscaped) {
-        isEscaped = false
-      } else {
-        if (firstQuotationMarkFound) {
-          return { value: value, lastValueIndex: i }
-        } else {
-          firstQuotationMarkFound = true
-          continue
+    if (currentChar === '\\') {
+      if (!isEscaped) {
+        isEscaped = true
+        escapeFound = true
+      }
+    } else {
+      if (currentChar === '"') {
+        if (!isEscaped) {
+          if (firstQuotationMarkFound) {
+            if (escapeFound) {
+              value = unescapeJSONString(value)
+            }
+            return { value: value, lastValueIndex: i }
+          } else {
+            firstQuotationMarkFound = true
+            continue
+          }
         }
       }
-    } else if (currentChar === '\\') {
-      isEscaped = true
+      isEscaped = false
     }
     value += currentChar
   }
 }
+
+const unescapeJSONString = (value) => JSON.parse(`"${value}"`)
 
 const parseNumber = (jsonString, currentCharIndex) => {
   let currentChar
