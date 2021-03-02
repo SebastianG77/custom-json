@@ -243,3 +243,19 @@ describe('Replace a JSON-Object with special characters', () => {
     expect(parsedJSON).toEqual({ ordinaryKey: 'ordinaryValue', 'special\tkey': newValue })
   })
 })
+
+describe('Replace a deeply nested value', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '[321, {"anotherKey": false, "mykey": {"nestedKey": ["arrayValue", 2, true, [50, "secondNestedValue"]]}}, false]'
+    const newValue = [321, 'myValue', null, false, { objectProperty: true }]
+    const expectedParentKeys = [1, 'mykey', 'nestedKey', 3, 0]
+    const parsedJSON = customJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => {
+      if (parentKeys.length === expectedParentKeys.length &&
+        parentKeys.every((value, index) => value === expectedParentKeys[index])) {
+        return newValue
+      }
+      return originalValue
+    })
+    expect(parsedJSON).toEqual([321, { anotherKey: false, mykey: { nestedKey: ['arrayValue', 2, true, [[321, 'myValue', null, false, { objectProperty: true }], 'secondNestedValue']] } }, false])
+  })
+})
