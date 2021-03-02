@@ -259,3 +259,10 @@ describe('Replace a deeply nested value', () => {
     expect(parsedJSON).toEqual([321, { anotherKey: false, mykey: { nestedKey: ['arrayValue', 2, true, [[321, 'myValue', null, false, { objectProperty: true }], 'secondNestedValue']] } }, false])
   })
 })
+
+describe('Parse an invalid JSON Object', () => {
+  it('does not parse the object but throws the expected exception as an invalid object has been passed as argument', () => {
+    const jsonString = '{mykey: "myvalue"}'
+    expect(() => customJSON.parse(jsonString)).toThrowError('Unexpected token m in JSON at position 1')
+  })
+})
