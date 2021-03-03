@@ -1,5 +1,5 @@
 {
-  "name": "custom-json",
+  "name": "customized-json",
   "version": "0.1.0",
   "description": "A JSON parser that allows users to overwrite default parsing behavior by customized rules.",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "jest ./tests/ --coverage",
     "dist": "standard **/*.js  && yarn test"
   },
-  "repository": "https://github.com/SebastianG77/custom-json.git",
+  "repository": "https://github.com/SebastianG77/customized-json.git",
   "author": "SebastianG",
   "license": "MIT",
   "private": false,
