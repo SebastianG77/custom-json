@@ -24,8 +24,18 @@ const jsonString =
 `{
   "name": "Carl",
   "pets": [
-    {"name": "Charlie", "type": "dog", "age": 5, "isChildFriendly": true },
-    {"name": "Lucy", "type": "cat", "age": 7, "isChildFriendly": false }
+    {
+      "name": "Charlie",
+      "type": "dog",
+      "age": 5,
+      "isChildFriendly": true
+    },
+    {
+      "name": "Lucy",
+      "type": "cat",
+      "age": 7,
+      "isChildFriendly": false
+      }
   ]
 }`
 
