@@ -1,3 +1,4 @@
 language: node_js
 node_js: 'lts/*'
-script: yarn dist && coveralls < coverage/lcov.info
+script: yarn dist 
+after_success: coveralls < coverage/lcov.info
