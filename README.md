@@ -5,7 +5,7 @@
  [![Coverage Status](https://coveralls.io/repos/github/SebastianG77/customized-json/badge.svg?branch=master)](https://coveralls.io/github/SebastianG77/customized-json?branch=master)
  [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
- A JSON parser that allows users to overwrite default parsing behavior by customized rules defined in user-defined function that gives the user more useful parameters than the reviver function of default `JSON.parse()` function.
+ A JSON parser that allows users to overwrite default parsing behavior by customized rules defined in a user-defined function that gives the user more useful parameters than the reviver function of `JSON.parse()`.
 
 ### Usage
 
