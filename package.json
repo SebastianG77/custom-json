@@ -1,7 +1,7 @@
 {
   "name": "customized-json",
   "version": "0.1.0",
-  "description": "A JSON parser that allows users to overwrite default parsing behavior by customized rules.",
+  "description": "A JSON parser that allows users to overwrite default parsing behavior by customized rules defined in a user-defined function that gives the user more useful parameters than the reviver function of JSON.parse().",
   "main": "index.js",
   "scripts": {
     "test": "jest ./tests/ --coverage",
