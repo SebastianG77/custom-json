@@ -22,8 +22,8 @@ Run `customized-json` as shown in the following example to parse a JSON string:
 ```javascript
 const customizedJSON = require('customized-json')
 
-const jsonString = 
-`{
+const jsonString = `
+{
   "name": "Carl",
   "pets": [
     {
