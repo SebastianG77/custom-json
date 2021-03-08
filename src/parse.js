@@ -128,8 +128,11 @@ const parseArray = (jsonString, currentCharIndex, parentKeys, parsedJSON, revive
   const array = []
   let modifiedJSON
   for (let i = currentCharIndex + 1; i < jsonString.length; i++) {
-    if (jsonString.charAt(i) === ']') {
+    const currentChar = jsonString.charAt(i)
+    if (currentChar === ']') {
       return { value: array, lastValueIndex: i, modifiedJSON: modifiedJSON }
+    } else if (isWhitespace(currentChar)) {
+      continue
     }
     parentKeys.push(array.length)
     const valueObject = parseValue(jsonString, i, parentKeys, parsedJSON, reviver)
@@ -138,6 +141,10 @@ const parseArray = (jsonString, currentCharIndex, parentKeys, parsedJSON, revive
     i = valueObject.lastValueIndex
     modifiedJSON = valueObject.modifiedJSON
   }
+}
+
+const isWhitespace = (character) => {
+  return character.trim() === ''
 }
 
 const prepareReviver = (parentKeys, stringValue, parsedJSON, reviver) => {
