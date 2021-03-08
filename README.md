@@ -7,13 +7,15 @@
 
  A JSON parser that allows users to overwrite default parsing behavior by customized rules defined in a user-defined function that gives the user more useful parameters than the reviver function of `JSON.parse()`.
 
-### Usage
+### Setup
 
 Install `customized-json` by running the following command:
 
 ```bash
 $ npm install customized-json
 ```
+
+### Parse a JSON String
 
 To validate a JSON string you can run the module as described in the following example:
 
