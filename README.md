@@ -43,7 +43,7 @@ const jsonString = `
 
 const keyPathToLuciesAge = ['pets', 1, 'age']
 
-const increaseLuciesAge = (key, originalValue, stringValue, jsonObject, parentKeys) => {
+const celebrateLuciesBirthday = (key, originalValue, stringValue, jsonObject, parentKeys) => {
   if (parentKeys.length === keyPathToLuciesAge.length &&
     parentKeys.every((key, index) => key === keyPathToLuciesAge[index])) {
     return originalValue + 1
@@ -51,7 +51,7 @@ const increaseLuciesAge = (key, originalValue, stringValue, jsonObject, parentKe
   return originalValue
 }
 
-const parsedJSON = customizedJSON.parse(jsonString, increaseLuciesAge)
+const parsedJSON = customizedJSON.parse(jsonString, celebrateLuciesBirthday)
 
 console.log(`Lucie's new age: ${parsedJSON.pets[1].age}`) // Lucie's new age: 8
 ```
