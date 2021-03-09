@@ -62,7 +62,7 @@ As can be seen above, the customization function must return a value which repre
 |:--|:--|
 |key|The key name of the current property.
 |originalValue|The value of the current property as parsed by JSON.parse().
-|stringValue|The string value as represented in the transferred JSON string.
+|stringValue|The string value of the current property as represented in the transferred JSON string.
 |jsonObject|The JSON object parsed by JSON.parse(). 
 |parentKeys|An array representing the key path to the current property. Keys of objects are represented by string values whereas array indices are of type number.
 
