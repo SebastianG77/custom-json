@@ -8,6 +8,16 @@
     "dist": "standard ./src/**/*.js  && yarn test"
   },
   "repository": "https://github.com/SebastianG77/customized-json.git",
+  "keywords": [
+    "JSON",
+    "parse",
+    "reviver",
+    "custom",
+    "customize",
+    "function",
+    "user-defined",
+    "individual"
+  ],
   "author": "SebastianG",
   "license": "MIT",
   "private": false,
