@@ -260,6 +260,57 @@ describe('Replace a deeply nested value', () => {
   })
 })
 
+describe('Replace a values of an array that contains whitespaces', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '[ "first",\t"second" \n]'
+    const firstNewValue = 'second'
+    const secondNewValue = 'third'
+    const parsedJSON = customizedJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (originalValue === 'first') { return firstNewValue } else if (originalValue === 'second') { return secondNewValue } return originalValue })
+    expect(parsedJSON).toEqual([firstNewValue, secondNewValue])
+  })
+})
+
+describe('Replace a values of an array that contains whitespaces', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{"mykey":\t"myvalue" \n}'
+    const newValue = 'newValue'
+    const parsedJSON = customizedJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { if (originalValue === 'myvalue') { return newValue } return originalValue })
+    expect(parsedJSON).toEqual({ mykey: newValue })
+  })
+})
+
+describe('Parse an empty object', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{}'
+    const parsedJSON = customizedJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { return originalValue })
+    expect(parsedJSON).toEqual({})
+  })
+})
+
+describe('Parse an empty object with whitespaces', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '{ \n\t}'
+    const parsedJSON = customizedJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { return originalValue })
+    expect(parsedJSON).toEqual({})
+  })
+})
+
+describe('Parse an empty array', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '[]'
+    const parsedJSON = customizedJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { return originalValue })
+    expect(parsedJSON).toEqual([])
+  })
+})
+
+describe('Parse an empty array with whitespaces', () => {
+  it('returns the expected JSON object', () => {
+    const jsonString = '[ \n\t]'
+    const parsedJSON = customizedJSON.parse(jsonString, (key, originalValue, stringValue, jsonObject, parentKeys) => { return originalValue })
+    expect(parsedJSON).toEqual([])
+  })
+})
+
 describe('Parse an invalid JSON Object', () => {
   it('does not parse the object but throws the expected exception as an invalid object has been passed as argument', () => {
     const jsonString = '{mykey: "myvalue"}'
