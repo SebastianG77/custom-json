@@ -5,7 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "jest ./tests/ --coverage",
-    "dist": "standard ./src/**/*.js  && yarn test"
+    "dist": "standard ./src/**/*.js  && yarn test",
+    "prepublishOnly": "yarn && yarn dist"
   },
   "repository": "https://github.com/SebastianG77/customized-json.git",
   "keywords": [
