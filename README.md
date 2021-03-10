@@ -71,5 +71,5 @@ If no function or a function with less than three parameters will be transmitted
 ### Things To Do
 This module is still under construction. Thus, incompatible changes are possible whenever they appear reasonable. A stable version 1.0.0 is expected to be released later in 2021 and will contain the following improvements:
 
-- A `customizedJSON.stringify()` function for customizing `JSON.stringify()`
-- Examples to show how to use `customizedJSON.parse()` and `customizedJSON.stringify()`
+- A `customizedJSON.stringify()` function for customizing `JSON.stringify()`.
+- Examples to show how to use `customizedJSON.parse()` and `customizedJSON.stringify()`.
