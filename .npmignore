@@ -1,0 +1,7 @@
+.git/
+coverage/
+tests/
+.gitignore
+.npmignore
+.travis.yml
+yarn.lock
