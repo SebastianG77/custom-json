@@ -66,7 +66,7 @@ As can be seen above, the customization function must return a value which repre
 |jsonObject|The JSON object parsed by JSON.parse(). 
 |parentKeys|An array representing the key path to the current property. Keys of objects are represented by string values whereas array indices are of type number.
 
-If no function or a function with less than three parameters will be transmitted to `customizedJSON.parse()`, the function `JSON.parse()` will be executed to avoid the overhead caused by determining parameters for the customization function.
+If no function or a function with less than three parameters will be transmitted to `customizedJSON.parse()`, the result of `JSON.parse()` will be returned to avoid the overhead caused by determining parameters for the customization function.
 
 ### Things To Do
 This module is still under construction. Thus, incompatible changes are possible whenever they appear reasonable. A stable version 1.0.0 is expected to be released later in 2021 and will contain the following improvements:
